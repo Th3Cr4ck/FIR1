@@ -37,6 +37,11 @@
 *.pgm
 *.cdf
 *.gdf
+*.drawio
+*.png
+*.jpg
+*.jpeg
+*.bkp
 
 # Directories generated during compilation
 /backup/

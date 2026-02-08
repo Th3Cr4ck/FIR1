@@ -2,10 +2,9 @@
 
 module tb_fir1;
 
-reg clk;
-reg rst_n;
-reg i_x;
-wire [2:0] o_y;
+reg clk, rst_n;
+reg	 [7:0] i_x;
+wire [7:0] o_y;
 
 // DUT
 FIR1 dut (
@@ -29,14 +28,14 @@ initial begin
     rst_n = 1;
 
     // estímulos
-    // x[n] = 1, 0, 1, 1, 0
+    // x[n] = 1, 2, 3, 4, 5
     #10 i_x = 1;  // n=0
-    #10 i_x = 0;  // n=1
-    #10 i_x = 1;  // n=2
-    #10 i_x = 1;  // n=3
-    #10 i_x = 0;  // n=4
-
-    #30;
+    #10 i_x = 2;  // n=1
+    #10 i_x = 3;  // n=2
+    #10 i_x = 4;  // n=3
+    #10 i_x = 5;  // n=4
+	
+	#10
     $stop;
 end
 
