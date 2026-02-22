@@ -37,12 +37,6 @@
 *.pgm
 *.cdf
 *.gdf
-<<<<<<< HEAD
-*.drawio
-*.png
-*.jpg
-*.jpeg
-*.bkp
 
 # Directories generated during compilation
 /backup/
@@ -86,13 +80,9 @@
 *.qsys_generate.log
 
 # Specific user-defined files to track (ensure these are NOT ignored if you use them)
-# !*.v
-# !*.sv
-# !*.vh
-# !*.tcl
-# !*.sdc
-# !*.qpf
-# !*.qsf
-# !*.png
-# !*.jpg
-# !*.md
+*.drawio
+*.png
+*.jpg
+*.jpeg
+*.bkp
+*.qws
