@@ -1,85 +1,60 @@
 module FIR1 (
-input	clk, 
-input	rst_n,
-input	[7:0] i_x,
-output	[7:0] o_y,
-output	[39:0] mem_flat_out
+    input clk,
+    input rst_n,
+    input [7:0] i_x,
+    output [7:0] o_y
 );
 
-wire [7:0] b0 = 1;
-wire [7:0] b1 = 1;
-wire [7:0] b2 = 1;
+  wire [7:0] coeff[0:2];
+  assign coeff[0] = 8'd1;
+  assign coeff[1] = 8'd1;
+  assign coeff[2] = 8'd1;
 
-wire [7:0] m0, m1, m2;
-wire [7:0] z1, z2;
-wire [7:0] add1;
+  wire [7:0] x_delay[0:2];
+  wire [7:0] mult_out[0:2];
+  wire [7:0] sum[0:2];
+  wire [7:0] prev_sum[0:2];
 
-reg write_result_enable;
+  reg [7:0] i_x_sec;
 
-mult mult0 (
-	.i_x(i_x),
-	.i_y(b0),
-	.o_z(m0)
-);
+  always @(posedge clk or negedge rst_n)
+    if (!rst_n) i_x_sec <= 0;
+    else i_x_sec <= i_x;
 
-zreg zreg1 (
-	.clk(clk),
-	.rst_n(rst_n),
-	.x(i_x),
-	.y(z1)
-);
+  // Primer valor
+  assign x_delay[0] = i_x_sec;
 
-mult mult1 (
-	.i_x(z1),
-	.i_y(b1),
-	.o_z(m1)
-);
+  genvar i;
+  generate
+    for (i = 0; i < 3; i = i + 1) begin : g_fir_tap
 
-adder adder1 (
-	.i_x(m0),
-	.i_y(m1),
-	.o_z(add1)
-);
+      if (i > 0) begin
+        zreg z0 (
+            .clk(clk),
+            .rst_n(rst_n),
+            .x(x_delay[i-1]),
+            .y(x_delay[i])
+        );
+      end
 
+      mult m0 (
+          .i_x(x_delay[i]),
+          .i_y(coeff[i]),
+          .o_z(mult_out[i])
+      );
 
-zreg zreg2 (
-	.clk(clk),
-	.rst_n(rst_n),
-	.x(z1),
-	.y(z2)
-);
+      assign prev_sum[i] = i > 0 ? sum[i-1] : 0;
 
-mult mult2 (
-	.i_x(z2),
-	.i_y(b2),
-	.o_z(m2)
-);
+      adder a0 (
+          .i_x(mult_out[i]),
+          .i_y(prev_sum[i]),
+          .o_z(sum[i])
+      );
 
-adder adder2 (
-	.i_x(m2),
-	.i_y(add1),
-	.o_z(o_y)
-);
+    end
+  endgenerate
 
-mem result_mem (
-	.clk(clk),
-	.rst_n(rst_n),
-	.x(o_y),
-	.mem_out(mem_flat_out)
-);
+  assign o_y = sum[2];
 
-// Logica enable 
-// Esperar la latencia para guardar los resultados en la memoria
-// reg [1:0] cnt;
-// always @(posedge clk or negedge rst_n) begin
-// 	if (!rst_n) begin
-// 		cnt <= 0;
-// 		write_result_enable <= 0;
-// 	end else begin
-// 		cnt <= cnt + 1;
-// 		if (cnt == 2)
-// 			write_result_enable <= 1;
-// 	end
-// end
 
 endmodule

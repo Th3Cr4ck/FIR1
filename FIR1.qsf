@@ -64,10 +64,11 @@ set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH tb_fir1 -sectio
 set_global_assignment -name EDA_TEST_BENCH_NAME tb_fir1 -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_fir1
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_fir1 -section_id tb_fir1
+set_global_assignment -name EDA_TEST_BENCH_FILE tb/tb_fir1.v -section_id tb_fir1
+set_global_assignment -name VERILOG_FILE rtl/accumulator.v
 set_global_assignment -name VERILOG_FILE rtl/zreg.v
 set_global_assignment -name VERILOG_FILE rtl/mult.v
 set_global_assignment -name VERILOG_FILE rtl/mem.v
 set_global_assignment -name VERILOG_FILE rtl/FIR1.v
 set_global_assignment -name VERILOG_FILE rtl/adder.v
-set_global_assignment -name EDA_TEST_BENCH_FILE tb/tb_fir1.v -section_id tb_fir1
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
