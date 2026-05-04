@@ -22,7 +22,7 @@ module fir #(
   genvar i;
   generate
     for (i = 0; i < ORDER; i = i + 1) begin : gen_coeff
-      assign coeff[i] = i;  // Cuidado: i puede ser > 2^DATA_WIDTH
+      assign coeff[i] = i <<< QF;
     end
   endgenerate
 
@@ -82,7 +82,7 @@ module fir #(
   endgenerate
 
   // Redondear y truncar al final (solo una vez)
-  localparam ROUND_BIAS = 1 << (QF - 1);  // La mitad del valor de LSB
+  localparam signed [ACC_WIDTH-1:0] ROUND_BIAS = 1 <<< (QF - 1);  // La mitad del valor de LSB
   wire signed [DATA_WIDTH-1:0] y_out_temp;
 
   assign y_out_temp = (sum_full[ORDER-1] + ROUND_BIAS) >>> QF;
