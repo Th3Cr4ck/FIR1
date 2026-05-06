@@ -1,0 +1,130 @@
+# //  Questa Altera Starter FPGA Edition-64
+# //  Version 2025.2 linux_x86_64 May 31 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# do FIR_run_msim_rtl_verilog.do
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Questa Altera Starter FPGA Edition-64 vmap 2025.2 Lib Mapping Utility 2025.05 May 31 2025
+# vmap work rtl_work 
+# ** Note: (vmap-220) '/opt/altera_lite/25.1std/questa_fse/linux_x86_64/../modelsim.ini' is used as the ini file.
+# Copying /opt/altera_lite/25.1std/questa_fse/linux_x86_64/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# 
+# vlog  -work work +incdir+/home/isaac/Documents/Cinvestav/Digital/FIR1/rtl {/home/isaac/Documents/Cinvestav/Digital/FIR1/rtl/fir.v}
+# Questa Altera Starter FPGA Edition-64 vlog 2025.2 Compiler 2025.05 May 31 2025
+# Start time: 20:05:49 on May 04,2026
+# vlog -reportprogress 300 -work work "+incdir+/home/isaac/Documents/Cinvestav/Digital/FIR1/rtl" /home/isaac/Documents/Cinvestav/Digital/FIR1/rtl/fir.v 
+# ** Note: (vlog-220) 'modelsim.ini' is used as the ini file.
+# -- Compiling module fir
+# 
+# Top level modules:
+# 	fir
+# End time: 20:05:49 on May 04,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+# vlog -sv -work work +incdir+/home/isaac/Documents/Cinvestav/Digital/FIR1/Quartus/../tb {/home/isaac/Documents/Cinvestav/Digital/FIR1/Quartus/../tb/tb_fir.sv}
+# Questa Altera Starter FPGA Edition-64 vlog 2025.2 Compiler 2025.05 May 31 2025
+# Start time: 20:05:49 on May 04,2026
+# vlog -reportprogress 300 -sv -work work "+incdir+/home/isaac/Documents/Cinvestav/Digital/FIR1/Quartus/../tb" /home/isaac/Documents/Cinvestav/Digital/FIR1/Quartus/../tb/tb_fir.sv 
+# ** Note: (vlog-220) 'modelsim.ini' is used as the ini file.
+# -- Compiling module tb_fir
+# 
+# Top level modules:
+# 	tb_fir
+# End time: 20:05:49 on May 04,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+# vsim -t 1ps -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cyclonev_ver -L cyclonev_hssi_ver -L cyclonev_pcie_hip_ver -L rtl_work -L work -voptargs="+acc"  tb_fir
+# ** Note: (vsim-220) 'modelsim.ini' is used as the ini file.
+# vsim -t 1ps -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cyclonev_ver -L cyclonev_hssi_ver -L cyclonev_pcie_hip_ver -L rtl_work -L work -voptargs=""+acc"" tb_fir 
+# Start time: 20:05:49 on May 04,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vopt-220) 'modelsim.ini' is used as the ini file.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading sv_std.std
+# Loading work.tb_fir(fast)
+# Loading work.fir(fast)
+# 
+# add wave *
+# view structure
+# .main_pane.structure.interior.cs.body.struct
+# view signals
+# .main_pane.objects.interior.cs.body.tree
+# run -all
+# t=15000 | x=0.500000 | y=0.000000
+# t=15000 | x=0.500000 | y=0.000000
+# t=25000 | x=-0.250000 | y=0.000000
+# t=25000 | x=-0.250000 | y=0.000000
+# t=35000 | x=0.750000 | y=-0.250000
+# t=35000 | x=0.750000 | y=-0.250000
+# t=45000 | x=0.250000 | y=-0.125000
+# t=45000 | x=0.250000 | y=-0.125000
+# t=55000 | x=-0.750000 | y=-0.500000
+# t=55000 | x=-0.750000 | y=-0.500000
+# t=65000 | x=-0.750000 | y=-0.375000
+# t=65000 | x=-0.750000 | y=-0.375000
+# t=75000 | x=-0.750000 | y=-0.125000
+# t=75000 | x=-0.750000 | y=-0.125000
+# t=85000 | x=-0.750000 | y=0.625000
+# t=85000 | x=-0.750000 | y=0.625000
+# t=95000 | x=-0.750000 | y=-0.875000
+# t=95000 | x=-0.750000 | y=-0.875000
+# ** Note: $finish    : /home/isaac/Documents/Cinvestav/Digital/FIR1/Quartus/../tb/tb_fir.sv(64)
+#    Time: 102 ns  Iteration: 0  Instance: /tb_fir
+# 1
+# Break in Module tb_fir at /home/isaac/Documents/Cinvestav/Digital/FIR1/Quartus/../tb/tb_fir.sv line 64
+# 
+# stdin: <EOF>
+add wave -position insertpoint  \
+sim:/tb_fir/dut/x_registers
+add wave -position insertpoint  \
+sim:/tb_fir/dut/sum
+add wave -position insertpoint  \
+sim:/tb_fir/dut/mult_results
+restart
+# Closing VCD file "wave.vcd"
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Loading work.tb_fir(fast)
+# Loading work.fir(fast)
+run -all
+# t=15000 | x=0.500000 | y=0.000000
+# t=15000 | x=0.500000 | y=0.000000
+# t=25000 | x=-0.250000 | y=0.000000
+# t=25000 | x=-0.250000 | y=0.000000
+# t=35000 | x=0.750000 | y=-0.250000
+# t=35000 | x=0.750000 | y=-0.250000
+# t=45000 | x=0.250000 | y=-0.125000
+# t=45000 | x=0.250000 | y=-0.125000
+# t=55000 | x=-0.750000 | y=-0.500000
+# t=55000 | x=-0.750000 | y=-0.500000
+# t=65000 | x=-0.750000 | y=-0.375000
+# t=65000 | x=-0.750000 | y=-0.375000
+# t=75000 | x=-0.750000 | y=-0.125000
+# t=75000 | x=-0.750000 | y=-0.125000
+# t=85000 | x=-0.750000 | y=0.625000
+# t=85000 | x=-0.750000 | y=0.625000
+# t=95000 | x=-0.750000 | y=-0.875000
+# t=95000 | x=-0.750000 | y=-0.875000
+# ** Note: $finish    : /home/isaac/Documents/Cinvestav/Digital/FIR1/Quartus/../tb/tb_fir.sv(64)
+#    Time: 102 ns  Iteration: 0  Instance: /tb_fir
+# 1
+# Break in Module tb_fir at /home/isaac/Documents/Cinvestav/Digital/FIR1/Quartus/../tb/tb_fir.sv line 64
+# End time: 20:11:11 on May 04,2026, Elapsed time: 0:05:22
+# Errors: 0, Warnings: 1

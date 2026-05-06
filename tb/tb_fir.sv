@@ -14,7 +14,7 @@ module tb_fir;
   fir #(
       .QI(QI),
       .QF(QF),
-      .ORDER(3)
+      .ORDER(2)
   ) dut (
       .clk  (clk),
       .rst_n(rst_n),
@@ -54,14 +54,15 @@ module tb_fir;
 
     // estímulos decimales (dentro de rango [-2, 2))
     x_in = to_fixed(0.5);
-    #10 x_in = to_fixed(-1.25);
-    #10 x_in = to_fixed(1.75);
+    #10 x_in = to_fixed(-0.25);
+    #10 x_in = to_fixed(0.75);
     #10 x_in = to_fixed(0.25);
     #10 x_in = to_fixed(-0.75);
+    #10 x_in = to_fixed(0);
 
     #50;
 
-    $stop;
+    $finish;
   end
 
   // debug en consola
