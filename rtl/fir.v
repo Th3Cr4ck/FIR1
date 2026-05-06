@@ -1,11 +1,11 @@
 module fir #(
-    parameter QI = 1,
-    parameter QF = 14,
+    parameter QI   = 1,
+    parameter QF   = 14,
     parameter TAPS = 4
 ) (
     input clk,
     input rst_n,
-    input signed [(QI+QF-1):0] coeff[TAPS-1:0],
+    input signed [(QI+QF-1):0] coeffs[TAPS-1:0],
     input signed [(QI+QF-1):0] x_in,
     output reg signed [(QI+QF-1):0] y_out
 );
@@ -41,14 +41,15 @@ module fir #(
   // Operaciones de cada tap
   wire signed [PROD_WIDTH-1:0] mult_results[TAPS-1:0];
 
+  genvar i;
   generate
     for (i = 1; i < TAPS; i = i + 1) begin : gen_tap
-      assign mult_results[i] = x_registers[i] * coeff[i];
+      assign mult_results[i] = x_registers[i] * coeffs[i];
       assign sum[i] = sum[i-1] + mult_results[i];
     end
   endgenerate
 
-  assign mult_results[0] = x_registers[0] * coeff[0];
+  assign mult_results[0] = x_registers[0] * coeffs[0];
   assign sum[0] = mult_results[0];
 
 endmodule

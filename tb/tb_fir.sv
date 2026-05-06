@@ -2,23 +2,26 @@
 
 module tb_fir;
 
-  localparam QI = 1;
-  localparam QF = 14;
-  localparam DATA_WIDTH = QI + QF;
+  parameter QI = 1;
+  parameter QF = 14;
+  parameter DATA_WIDTH = QI + QF;
+  parameter TAPS = 4;
 
   reg clk, rst_n;
-  reg  signed [DATA_WIDTH-1:0] x_in;
+  reg signed  [DATA_WIDTH-1:0] coeffs[TAPS-1:0];
+  reg signed  [DATA_WIDTH-1:0] x_in;
   wire signed [DATA_WIDTH-1:0] y_out;
 
   // DUT
   fir #(
-      .QI(QI),
-      .QF(QF),
-      .ORDER(2)
+      .QI  (QI),
+      .QF  (QF),
+      .TAPS(TAPS)
   ) dut (
-      .clk  (clk),
+      .clk(clk),
       .rst_n(rst_n),
-      .x_in (x_in),
+      .coeffs(coeffs),
+      .x_in(x_in),
       .y_out(y_out)
   );
 
@@ -44,6 +47,16 @@ module tb_fir;
   initial begin
     $dumpfile("wave.vcd");
     $dumpvars(0, tb_fir);
+  end
+
+  integer i;
+  initial begin
+    $readmemh("../config/coeffs.hex", coeffs);
+
+    for (i = 0; i < TAPS; i = i + 1) $display("coeff[%0d]=%0d", i, coeffs[i]);
+  end
+
+  initial begin
 
     clk   = 0;
     rst_n = 0;
@@ -52,15 +65,15 @@ module tb_fir;
     #12;
     rst_n = 1;
 
-    // estímulos decimales (dentro de rango [-2, 2))
-    x_in = to_fixed(0.5);
+    // estímulos decimales (dentro de rango [-1, 1))
+    x_in  = to_fixed(0.5);
     #10 x_in = to_fixed(-0.25);
     #10 x_in = to_fixed(0.75);
     #10 x_in = to_fixed(0.25);
     #10 x_in = to_fixed(-0.75);
     #10 x_in = to_fixed(0);
 
-    #50;
+    #200;
 
     $finish;
   end
@@ -68,10 +81,7 @@ module tb_fir;
   // debug en consola
   always @(posedge clk) begin
     if (rst_n) begin
-      $display("t=%0t | x=%f | y=%f",
-               $time,
-               to_real(x_in),
-               to_real(y_out));
+      $display("t=%0t | x=%f | y=%f", $time, to_real(x_in), to_real(y_out));
     end
   end
 
