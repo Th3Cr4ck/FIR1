@@ -15,11 +15,15 @@ module fir #(
 
   // Bits extra para acumulación
   localparam ACC_EXTRA = $clog2(TAPS);
-  localparam ACC_WIDTH = PROD_WIDTH + ACC_EXTRA;  // Ancho del acumulador
+  localparam ACC_WIDTH = PROD_WIDTH + ACC_EXTRA;
+
+  localparam OUT_MSB = QI + 2 * QF - 1;
 
   // Registers
   reg signed [DATA_WIDTH-1:0] x_registers[TAPS-1:0];
   wire signed [ACC_WIDTH-1:0] sum[TAPS-1:0];
+  wire signed [ACC_WIDTH-1:0] sum_rounded[TAPS-1:0];
+
 
   integer k;
   always @(posedge clk or negedge rst_n)
@@ -34,11 +38,11 @@ module fir #(
         x_registers[k] <= x_registers[k-1];
       end
       x_registers[0] <= x_in;
-      y_out <= sum[TAPS-1][(2*QF)-:DATA_WIDTH];
+      y_out <= sum_rounded[TAPS-1][OUT_MSB-:DATA_WIDTH];
     end
 
 
-  // Operaciones de cada tap
+  // Aumulaciones de cada tap
   wire signed [PROD_WIDTH-1:0] mult_results[TAPS-1:0];
 
   genvar i;
@@ -46,10 +50,13 @@ module fir #(
     for (i = 1; i < TAPS; i = i + 1) begin : gen_tap
       assign mult_results[i] = x_registers[i] * coeffs[i];
       assign sum[i] = sum[i-1] + mult_results[i];
+      // Redondear al más cercano sumando 0.5 LSB antes de truncar
+      assign sum_rounded[i] = sum[i] + (ACC_WIDTH'(1) << (QF - 1));
     end
   endgenerate
 
   assign mult_results[0] = x_registers[0] * coeffs[0];
   assign sum[0] = mult_results[0];
+  assign sum_rounded[0] = sum[0] + (ACC_WIDTH'(1) << (QF - 1));
 
 endmodule

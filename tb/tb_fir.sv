@@ -56,6 +56,13 @@ module tb_fir;
     for (i = 0; i < TAPS; i = i + 1) $display("coeff[%0d]=%0d", i, coeffs[i]);
   end
 
+  integer fd;
+  initial begin
+    fd = $fopen("../simulation/results.txt");
+    if (fd == 0)
+      $display("ERROR: No se pudo abrir el archivo para escribir los resultados de salida");
+  end
+
   initial begin
 
     clk   = 0;
@@ -75,13 +82,15 @@ module tb_fir;
 
     #200;
 
+    $fclose(fd);
     $finish;
   end
 
-  // debug en consola
   always @(posedge clk) begin
     if (rst_n) begin
+      #1; // Dejar que se actalice y_out y luego escribirlo
       $display("t=%0t | x=%f | y=%f", $time, to_real(x_in), to_real(y_out));
+      $fdisplay(fd, "%f", to_real(y_out));
     end
   end
 

@@ -1,0 +1,18 @@
+% Este programa calcula numericamente el resultado de un filtro FIR y
+% valida la respuesta obtenida por el modulo fir.v de verilog.
+
+clearvars;
+
+x = [0.5 -0.25 0.75 0.25 -0.75];
+
+params = jsondecode(fileread('../config/params.json'));
+y_verilog = readmatrix('../simulation/results.txt');
+
+h = designFIR(params., pi/4, 7);
+
+y_matlab = conv(h, x, "full");
+
+close all;
+stem(y_verilog, 'DisplayName', 'Verilog');
+hold on; stem(y_matlab, 'DisplayName', 'Matlab', 'MarkerSize', 10);
+legend;
